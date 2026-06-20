@@ -26,7 +26,6 @@ function SubmitPage() {
   const submit = useServerFn(submitArticle);
   const navigate = useNavigate();
   const [headline, setHeadline] = useState("");
-  const [summary, setSummary] = useState("");
   const [body, setBody] = useState("");
   const [category, setCategory] = useState("");
   const [name, setName] = useState("");
@@ -64,7 +63,7 @@ function SubmitPage() {
     try {
       const res = await submit({
         data: {
-          headline, summary, body,
+          headline, body,
           category: category || null,
           submitter_name: name,
           submitter_email: email,
@@ -128,15 +127,6 @@ function SubmitPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-paper border border-paper-rule px-3 py-2 focus:outline-none focus:border-ink-deep"
-            />
-          </Field>
-
-          <Field label="Summary (1-2 sentences)" required>
-            <textarea
-              value={summary}
-              onChange={(e) => setSummary(e.target.value)}
-              required minLength={20} maxLength={500} rows={3}
               className="w-full bg-paper border border-paper-rule px-3 py-2 focus:outline-none focus:border-ink-deep"
             />
           </Field>
