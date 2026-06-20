@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import logo from "@/assets/logo.png";
 
 export function Masthead() {
   const today = new Date().toLocaleDateString(undefined, {
