@@ -35,9 +35,6 @@ function ContactPage() {
     setError(null);
     try {
       await send({ data: { name, email, message } });
-      const subject = encodeURIComponent(`Global Media inquiry from ${name}`);
-      const body = encodeURIComponent(`From: ${name} <${email}>\n\n${message}`);
-      window.location.href = `mailto:kanishkamogha20@gmail.com?subject=${subject}&body=${body}`;
       setSent(true);
       setName(""); setEmail(""); setMessage("");
     } catch (err) {
