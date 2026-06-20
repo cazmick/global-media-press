@@ -25,12 +25,13 @@ export const Route = createFileRoute("/article/$id")({
       return { meta: [{ title: "Article — Global Media" }] };
     }
     const a = loaderData.article;
+    const desc = a.summary || a.body.slice(0, 160).replace(/\n+/g, " ").trim() + (a.body.length > 160 ? "…" : "");
     return {
       meta: [
         { title: `${a.headline} — Global Media` },
-        { name: "description", content: a.summary },
+        { name: "description", content: desc },
         { property: "og:title", content: a.headline },
-        { property: "og:description", content: a.summary },
+        { property: "og:description", content: desc },
         { property: "og:type", content: "article" },
         { property: "og:url", content: url },
         ...(a.images[0] ? [{ property: "og:image", content: a.images[0] }] : []),
@@ -42,8 +43,8 @@ export const Route = createFileRoute("/article/$id")({
           children: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "NewsArticle",
-            headline: a.headline,
-            description: a.summary,
+          headline: a.headline,
+            description: desc,
             datePublished: a.published_at,
             dateModified: a.published_at,
             author: { "@type": "Person", name: a.submitter_name?.trim() || "Anonymous" },
