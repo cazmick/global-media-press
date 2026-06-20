@@ -10,7 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SubmitRouteImport } from './routes/submit'
-import { Route as AuthRouteImport } from './routes/auth'
+import { Route as IamBossRouteImport } from './routes/IamBoss'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArticleIdRouteImport } from './routes/article.$id'
@@ -21,9 +21,9 @@ const SubmitRoute = SubmitRouteImport.update({
   path: '/submit',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
+const IamBossRoute = IamBossRouteImport.update({
+  id: '/IamBoss',
+  path: '/IamBoss',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
@@ -48,14 +48,14 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
+  '/IamBoss': typeof IamBossRoute
   '/submit': typeof SubmitRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/article/$id': typeof ArticleIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
+  '/IamBoss': typeof IamBossRoute
   '/submit': typeof SubmitRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/article/$id': typeof ArticleIdRoute
@@ -64,21 +64,21 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
-  '/auth': typeof AuthRoute
+  '/IamBoss': typeof IamBossRoute
   '/submit': typeof SubmitRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/article/$id': typeof ArticleIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/submit' | '/admin' | '/article/$id'
+  fullPaths: '/' | '/IamBoss' | '/submit' | '/admin' | '/article/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/submit' | '/admin' | '/article/$id'
+  to: '/' | '/IamBoss' | '/submit' | '/admin' | '/article/$id'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
-    | '/auth'
+    | '/IamBoss'
     | '/submit'
     | '/_authenticated/admin'
     | '/article/$id'
@@ -87,7 +87,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
-  AuthRoute: typeof AuthRoute
+  IamBossRoute: typeof IamBossRoute
   SubmitRoute: typeof SubmitRoute
   ArticleIdRoute: typeof ArticleIdRoute
 }
@@ -101,11 +101,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SubmitRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
+    '/IamBoss': {
+      id: '/IamBoss'
+      path: '/IamBoss'
+      fullPath: '/IamBoss'
+      preLoaderRoute: typeof IamBossRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -153,7 +153,7 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
-  AuthRoute: AuthRoute,
+  IamBossRoute: IamBossRoute,
   SubmitRoute: SubmitRoute,
   ArticleIdRoute: ArticleIdRoute,
 }
