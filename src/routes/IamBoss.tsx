@@ -18,7 +18,18 @@ const credentialsSchema = z.object({
 });
 
 export const Route = createFileRoute("/IamBoss")({
-  head: () => ({ meta: [{ title: "Editor Sign In — Global Media" }] }),
+  head: () => ({
+    meta: [
+      { title: "Editor Sign In — Global Media" },
+      { name: "description", content: "Editor and newsroom staff sign-in for Global Media. Restricted access for moderators managing published stories." },
+      { property: "og:title", content: "Editor Sign In — Global Media" },
+      { property: "og:description", content: "Editor and newsroom staff sign-in for Global Media. Restricted access for moderators managing published stories." },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://global-media-press.lovable.app/IamBoss" },
+      { name: "robots", content: "noindex, nofollow" },
+    ],
+    links: [{ rel: "canonical", href: "https://global-media-press.lovable.app/IamBoss" }],
+  }),
   component: AuthPage,
 });
 
