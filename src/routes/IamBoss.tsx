@@ -1,9 +1,21 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { z } from "zod";
 import { Masthead } from "@/components/Masthead";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
+
+const credentialsSchema = z.object({
+  email: z.string().trim().email("Enter a valid email").max(255),
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .max(72, "Password must be 72 characters or fewer")
+    .regex(/[A-Z]/, "Include at least one uppercase letter")
+    .regex(/[a-z]/, "Include at least one lowercase letter")
+    .regex(/[0-9]/, "Include at least one number"),
+});
 
 export const Route = createFileRoute("/IamBoss")({
   head: () => ({ meta: [{ title: "Editor Sign In — Global Media" }] }),
@@ -25,6 +37,11 @@ function AuthPage() {
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    const parsed = credentialsSchema.safeParse({ email, password });
+    if (!parsed.success) {
+      toast.error(parsed.error.issues[0].message);
+      return;
+    }
     setLoading(true);
     try {
       if (mode === "signin") {
