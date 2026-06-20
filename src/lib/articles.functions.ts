@@ -18,7 +18,7 @@ export type ArticleDTO = {
   summary: string;
   body: string;
   images: string[];
-  submitter_name: string;
+  submitter_name: string | null;
   category: string | null;
   status: string;
   click_count: number;
