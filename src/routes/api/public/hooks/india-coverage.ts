@@ -72,7 +72,28 @@ export const Route = createFileRoute("/api/public/hooks/india-coverage")({
             }
             const headline = draft.headline.slice(0, 200);
             const summary = (draft.summary || "").slice(0, 500);
-            const body = draft.body.slice(0, 20000);
+            let body = draft.body.slice(0, 20000);
+
+            // Safety net: if any non-Latin script slipped through, re-ask the model to translate.
+            const nonEnglish = /[\u0370-\u03FF\u0400-\u04FF\u0590-\u05FF\u0600-\u06FF\u0900-\u097F\u3040-\u30FF\u3400-\u9FFF\uAC00-\uD7AF]/;
+            if (nonEnglish.test(headline + summary + body)) {
+              const fix = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+                body: JSON.stringify({
+                  model: "google/gemini-3-flash-preview",
+                  messages: [
+                    { role: "system", content: "Translate the user text to natural fluent English. Return only the translated text, no preamble." },
+                    { role: "user", content: body },
+                  ],
+                }),
+              });
+              if (fix.ok) {
+                const fj = await fix.json();
+                const t = fj?.choices?.[0]?.message?.content?.trim();
+                if (t) body = t.slice(0, 20000);
+              }
+            }
 
             const { data, error } = await supabaseAdmin
               .from("articles")
