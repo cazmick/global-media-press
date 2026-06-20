@@ -84,7 +84,7 @@ function ArticlePage() {
         )}
 
         <div className="prose-newspaper">
-          {article.body.split(/\n\n+/).map((para, i) => (
+          {article.body.split(/\n\n+/).map((para: string, i: number) => (
             <p
               key={i}
               className={`text-lg leading-[1.75] text-ink mb-5 ${i === 0 ? "dropcap" : ""}`}
