@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SubmitRouteImport } from './routes/submit'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as IamBossRouteImport } from './routes/IamBoss'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -19,6 +20,11 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 const SubmitRoute = SubmitRouteImport.update({
   id: '/submit',
   path: '/submit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IamBossRoute = IamBossRouteImport.update({
@@ -49,6 +55,7 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/IamBoss': typeof IamBossRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/article/$id': typeof ArticleIdRoute
@@ -56,6 +63,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/IamBoss': typeof IamBossRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/article/$id': typeof ArticleIdRoute
@@ -65,20 +73,28 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/IamBoss': typeof IamBossRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/submit': typeof SubmitRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/article/$id': typeof ArticleIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/IamBoss' | '/submit' | '/admin' | '/article/$id'
+  fullPaths:
+    | '/'
+    | '/IamBoss'
+    | '/sitemap.xml'
+    | '/submit'
+    | '/admin'
+    | '/article/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/IamBoss' | '/submit' | '/admin' | '/article/$id'
+  to: '/' | '/IamBoss' | '/sitemap.xml' | '/submit' | '/admin' | '/article/$id'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/IamBoss'
+    | '/sitemap.xml'
     | '/submit'
     | '/_authenticated/admin'
     | '/article/$id'
@@ -88,6 +104,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   IamBossRoute: typeof IamBossRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SubmitRoute: typeof SubmitRoute
   ArticleIdRoute: typeof ArticleIdRoute
 }
@@ -99,6 +116,13 @@ declare module '@tanstack/react-router' {
       path: '/submit'
       fullPath: '/submit'
       preLoaderRoute: typeof SubmitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/IamBoss': {
@@ -154,6 +178,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   IamBossRoute: IamBossRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   SubmitRoute: SubmitRoute,
   ArticleIdRoute: ArticleIdRoute,
 }
