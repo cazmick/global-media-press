@@ -83,14 +83,14 @@ function Home() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
           <div className="lg:col-span-3 order-2 lg:order-1">
             <div className="lg:sticky lg:top-4">
               <TrendingSidebar items={trending} />
             </div>
           </div>
 
-          <main className="lg:col-span-9 order-1 lg:order-2 space-y-8">
+          <main className="lg:col-span-9 order-1 lg:order-2 space-y-6 sm:space-y-8">
             {articles.length === 0 ? (
               <div className="text-center py-16 border border-dashed border-paper-rule">
                 <p className="font-display text-2xl">The presses are quiet.</p>
@@ -99,7 +99,7 @@ function Home() {
             ) : (
               <>
                 {lead && <ArticleCard article={lead} lead />}
-                <div className="grid sm:grid-cols-2 gap-8">
+                <div className="grid sm:grid-cols-2 gap-6 sm:gap-8">
                   {rest.map((a) => (
                     <ArticleCard key={a.id} article={a} />
                   ))}
