@@ -113,11 +113,11 @@ function SubmitPage() {
                 className="w-full bg-paper border border-paper-rule px-3 py-2 focus:outline-none focus:border-ink-deep"
               />
             </Field>
-            <Field label="Your name" required>
+            <Field label="Your name (optional)">
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                required minLength={2}
+                placeholder="Leave blank to publish anonymously"
                 className="w-full bg-paper border border-paper-rule px-3 py-2 focus:outline-none focus:border-ink-deep"
               />
             </Field>

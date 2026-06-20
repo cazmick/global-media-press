@@ -42,7 +42,7 @@ export const Route = createFileRoute("/article/$id")({
             description: a.summary,
             datePublished: a.published_at,
             dateModified: a.published_at,
-            author: { "@type": "Person", name: a.submitter_name },
+            author: { "@type": "Person", name: a.submitter_name?.trim() || "Anonymous" },
             publisher: {
               "@type": "Organization",
               name: "Global Media",
@@ -98,7 +98,7 @@ function ArticlePage() {
         <p className="mt-4 text-xl text-ink leading-relaxed italic">{article.summary}</p>
 
         <div className="mt-4 flex flex-wrap items-center gap-3 font-mono text-xs uppercase tracking-widest text-ink-muted border-y border-paper-rule py-3">
-          <span>By {article.submitter_name}</span>
+          <span>By {article.submitter_name?.trim() || "Anonymous"}</span>
           <span>·</span>
           <span>{date}</span>
           <span>·</span>

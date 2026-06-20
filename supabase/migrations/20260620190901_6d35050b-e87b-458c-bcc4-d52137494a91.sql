@@ -1,0 +1,1 @@
+ALTER TABLE public.articles ALTER COLUMN submitter_name DROP NOT NULL;

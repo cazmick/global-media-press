@@ -45,7 +45,7 @@ export function ArticleCard({ article, lead = false }: { article: ArticleDTO; le
             {article.summary}
           </p>
           <div className="mt-3 flex items-center gap-3 font-mono text-[11px] uppercase tracking-widest text-ink-muted">
-            <span>By {article.submitter_name}</span>
+            <span>By {article.submitter_name?.trim() || "Anonymous"}</span>
             <span>·</span>
             <span>{formatDate(article.published_at)}</span>
           </div>
