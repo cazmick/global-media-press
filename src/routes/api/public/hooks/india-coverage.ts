@@ -14,13 +14,15 @@ type Drafted = { headline: string; summary: string; body: string };
 async function draftStory(src: typeof SOURCES[number], apiKey: string): Promise<Drafted | null> {
   const prompt = `You are a wire-service editor for an Indian news portal. Write a single, original news brief summarizing how ${src.outlet} (${src.country}, ${src.continent}) — a leading outlet on its continent — has recently covered or commented on India (politics, economy, diplomacy, culture, sport, climate, or tech). Focus on what they think of India.
 
+LANGUAGE: Output MUST be in natural, fluent English only. If the original source language is not English (e.g. Portuguese, Japanese), translate everything to English first. Do NOT include any non-English words, characters, or scripts (no Japanese, Chinese, Cyrillic, Portuguese diacritics in body text beyond proper nouns). Proper nouns may keep standard romanized spelling.
+
 Return STRICT JSON with this shape and nothing else:
 {"headline": "...", "summary": "...", "body": "..."}
 
 Rules:
-- headline: 8-110 chars, factual, no clickbait, mention the outlet or country.
-- summary: 1-2 sentences, <= 280 chars.
-- body: 3-5 short paragraphs (<= 1800 chars total). Paraphrase only — do NOT fabricate direct quotes or specific dates. Attribute clearly ("According to ${src.outlet}…"). End with a one-line "Source: ${src.outlet} (${src.country})" line.
+- headline: 8-110 chars, factual English, no clickbait, mention the outlet or country.
+- summary: 1-2 English sentences, <= 280 chars.
+- body: 3-5 short English paragraphs (<= 1800 chars total). Paraphrase only — do NOT fabricate direct quotes or specific dates. Attribute clearly ("According to ${src.outlet}…"). End with a one-line "Source: ${src.outlet} (${src.country})" line.
 - Neutral, encyclopedic tone. No emojis. No markdown.`;
 
   const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -70,7 +72,28 @@ export const Route = createFileRoute("/api/public/hooks/india-coverage")({
             }
             const headline = draft.headline.slice(0, 200);
             const summary = (draft.summary || "").slice(0, 500);
-            const body = draft.body.slice(0, 20000);
+            let body = draft.body.slice(0, 20000);
+
+            // Safety net: if any non-Latin script slipped through, re-ask the model to translate.
+            const nonEnglish = /[\u0370-\u03FF\u0400-\u04FF\u0590-\u05FF\u0600-\u06FF\u0900-\u097F\u3040-\u30FF\u3400-\u9FFF\uAC00-\uD7AF]/;
+            if (nonEnglish.test(headline + summary + body)) {
+              const fix = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },
+                body: JSON.stringify({
+                  model: "google/gemini-3-flash-preview",
+                  messages: [
+                    { role: "system", content: "Translate the user text to natural fluent English. Return only the translated text, no preamble." },
+                    { role: "user", content: body },
+                  ],
+                }),
+              });
+              if (fix.ok) {
+                const fj = await fix.json();
+                const t = fj?.choices?.[0]?.message?.content?.trim();
+                if (t) body = t.slice(0, 20000);
+              }
+            }
 
             const { data, error } = await supabaseAdmin
               .from("articles")
