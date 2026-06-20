@@ -114,18 +114,20 @@ function ArticlePage() {
   return (
     <div className="min-h-screen bg-background">
       <Masthead />
-      <article className="max-w-3xl mx-auto px-4 py-10">
+      <article className="max-w-3xl mx-auto px-3 sm:px-4 py-6 sm:py-10">
         {article.category && <div className="kicker mb-3">{article.category}</div>}
-        <h1 className="font-display font-black text-4xl sm:text-6xl leading-[1.02] tracking-tight text-ink-deep">
+        <h1 className="font-display font-black text-3xl sm:text-5xl md:text-6xl leading-[1.05] tracking-tight text-ink-deep break-words">
           {article.headline}
         </h1>
-        <p className="mt-4 text-xl text-ink leading-relaxed italic">{article.summary}</p>
+        {article.summary && (
+          <p className="mt-4 text-base sm:text-xl text-ink leading-relaxed italic">{article.summary}</p>
+        )}
 
-        <div className="mt-4 flex flex-wrap items-center gap-3 font-mono text-xs uppercase tracking-widest text-ink-muted border-y border-paper-rule py-3">
+        <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[10px] sm:text-xs uppercase tracking-widest text-ink-muted border-y border-paper-rule py-3">
           <span>By {article.submitter_name?.trim() || "Anonymous"}</span>
-          <span>·</span>
+          <span aria-hidden>·</span>
           <span>{date}</span>
-          <span>·</span>
+          <span aria-hidden>·</span>
           <span>{article.click_count.toLocaleString()} reads</span>
         </div>
 
@@ -140,7 +142,7 @@ function ArticlePage() {
             type="button"
             onClick={handleRefine}
             disabled={refining}
-            className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest px-2.5 py-1.5 border border-ink-deep text-ink-deep hover:bg-ink-deep hover:text-background transition-colors disabled:opacity-60"
+            className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest px-3 py-2 border border-ink-deep text-ink-deep hover:bg-ink-deep hover:text-background transition-colors disabled:opacity-60"
             title="Improve grammar and clarity with AI"
           >
             {refining ? <Loader2 className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
@@ -152,15 +154,15 @@ function ArticlePage() {
           {displayBody.split(/\n\n+/).map((para: string, i: number) => (
             <p
               key={i}
-              className={`text-lg leading-[1.75] text-ink mb-5 ${i === 0 ? "dropcap" : ""}`}
-              style={{ textAlign: "justify" }}
+              className={`text-base sm:text-lg leading-[1.7] sm:leading-[1.75] text-ink mb-4 sm:mb-5 ${i === 0 ? "sm:dropcap" : ""}`}
+              style={{ textAlign: "justify", hyphens: "auto" }}
             >
               {para}
             </p>
           ))}
         </div>
 
-        <div className="mt-10 pt-6 border-t-2 border-double border-ink-deep flex justify-between font-mono text-xs uppercase tracking-widest">
+        <div className="mt-10 pt-6 border-t-2 border-double border-ink-deep flex flex-wrap justify-between gap-3 font-mono text-xs uppercase tracking-widest">
           <Link to="/" className="hover:text-accent-red">← Front Page</Link>
           <Link to="/submit" className="hover:text-accent-red">Submit your own →</Link>
         </div>

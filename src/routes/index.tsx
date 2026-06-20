@@ -71,26 +71,26 @@ function Home() {
     <div className="min-h-screen bg-background text-foreground">
       <Masthead asH1 />
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-between border-b border-paper-rule pb-3 mb-6">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-paper-rule pb-3 mb-6">
           <p className="kicker">Front Page · Sorted by most recent</p>
           <Link
             to="/submit"
-            className="inline-flex items-center gap-2 bg-ink-deep text-paper px-4 py-2 font-mono text-xs uppercase tracking-widest hover:bg-accent-red transition"
+            className="inline-flex items-center justify-center gap-2 bg-ink-deep text-paper px-4 py-2.5 font-mono text-xs uppercase tracking-widest hover:bg-accent-red transition w-full sm:w-auto"
           >
             <PenSquare className="w-3.5 h-3.5" />
             Submit a Story
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8">
           <div className="lg:col-span-3 order-2 lg:order-1">
             <div className="lg:sticky lg:top-4">
               <TrendingSidebar items={trending} />
             </div>
           </div>
 
-          <main className="lg:col-span-9 order-1 lg:order-2 space-y-8">
+          <main className="lg:col-span-9 order-1 lg:order-2 space-y-6 sm:space-y-8">
             {articles.length === 0 ? (
               <div className="text-center py-16 border border-dashed border-paper-rule">
                 <p className="font-display text-2xl">The presses are quiet.</p>
@@ -99,7 +99,7 @@ function Home() {
             ) : (
               <>
                 {lead && <ArticleCard article={lead} lead />}
-                <div className="grid sm:grid-cols-2 gap-8">
+                <div className="grid sm:grid-cols-2 gap-6 sm:gap-8">
                   {rest.map((a) => (
                     <ArticleCard key={a.id} article={a} />
                   ))}
