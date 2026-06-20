@@ -18,6 +18,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as EducationWhatIsCitizenJournalismRouteImport } from './routes/education.what-is-citizen-journalism'
 import { Route as ArticleIdRouteImport } from './routes/article.$id'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as ApiPublicHooksIndiaCoverageRouteImport } from './routes/api/public/hooks/india-coverage'
 
 const SubmitRoute = SubmitRouteImport.update({
   id: '/submit',
@@ -64,6 +65,12 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ApiPublicHooksIndiaCoverageRoute =
+  ApiPublicHooksIndiaCoverageRouteImport.update({
+    id: '/api/public/hooks/india-coverage',
+    path: '/api/public/hooks/india-coverage',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -74,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRoute
   '/article/$id': typeof ArticleIdRoute
   '/education/what-is-citizen-journalism': typeof EducationWhatIsCitizenJournalismRoute
+  '/api/public/hooks/india-coverage': typeof ApiPublicHooksIndiaCoverageRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -84,6 +92,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRoute
   '/article/$id': typeof ArticleIdRoute
   '/education/what-is-citizen-journalism': typeof EducationWhatIsCitizenJournalismRoute
+  '/api/public/hooks/india-coverage': typeof ApiPublicHooksIndiaCoverageRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -96,6 +105,7 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/article/$id': typeof ArticleIdRoute
   '/education/what-is-citizen-journalism': typeof EducationWhatIsCitizenJournalismRoute
+  '/api/public/hooks/india-coverage': typeof ApiPublicHooksIndiaCoverageRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -108,6 +118,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/article/$id'
     | '/education/what-is-citizen-journalism'
+    | '/api/public/hooks/india-coverage'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -118,6 +129,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/article/$id'
     | '/education/what-is-citizen-journalism'
+    | '/api/public/hooks/india-coverage'
   id:
     | '__root__'
     | '/'
@@ -129,6 +141,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/article/$id'
     | '/education/what-is-citizen-journalism'
+    | '/api/public/hooks/india-coverage'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -140,6 +153,7 @@ export interface RootRouteChildren {
   SubmitRoute: typeof SubmitRoute
   ArticleIdRoute: typeof ArticleIdRoute
   EducationWhatIsCitizenJournalismRoute: typeof EducationWhatIsCitizenJournalismRoute
+  ApiPublicHooksIndiaCoverageRoute: typeof ApiPublicHooksIndiaCoverageRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -207,6 +221,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/hooks/india-coverage': {
+      id: '/api/public/hooks/india-coverage'
+      path: '/api/public/hooks/india-coverage'
+      fullPath: '/api/public/hooks/india-coverage'
+      preLoaderRoute: typeof ApiPublicHooksIndiaCoverageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -230,6 +251,7 @@ const rootRouteChildren: RootRouteChildren = {
   SubmitRoute: SubmitRoute,
   ArticleIdRoute: ArticleIdRoute,
   EducationWhatIsCitizenJournalismRoute: EducationWhatIsCitizenJournalismRoute,
+  ApiPublicHooksIndiaCoverageRoute: ApiPublicHooksIndiaCoverageRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
