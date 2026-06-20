@@ -89,7 +89,7 @@ const SubmitSchema = z.object({
   summary: z.string().min(20).max(500),
   body: z.string().min(40).max(20000),
   category: z.string().max(40).optional().nullable(),
-  submitter_name: z.string().min(2).max(80),
+  submitter_name: z.string().max(80).optional().nullable(),
   submitter_email: z.string().email().optional().or(z.literal("")),
   images: z.array(z.string().url()).max(8).default([]),
 });
