@@ -30,6 +30,8 @@ export function Masthead({ asH1 = false }: { asH1?: boolean }) {
           <span className="text-paper-rule">·</span>
           <Link to="/submit" className="hover:text-accent-red">Submit a Story</Link>
           <span className="text-paper-rule">·</span>
+          <Link to="/contact" className="hover:text-accent-red">Contact</Link>
+          <span className="text-paper-rule">·</span>
           <Link to="/admin" className="hover:text-accent-red">Newsroom</Link>
         </nav>
       </div>
