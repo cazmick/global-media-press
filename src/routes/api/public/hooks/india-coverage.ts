@@ -14,13 +14,15 @@ type Drafted = { headline: string; summary: string; body: string };
 async function draftStory(src: typeof SOURCES[number], apiKey: string): Promise<Drafted | null> {
   const prompt = `You are a wire-service editor for an Indian news portal. Write a single, original news brief summarizing how ${src.outlet} (${src.country}, ${src.continent}) — a leading outlet on its continent — has recently covered or commented on India (politics, economy, diplomacy, culture, sport, climate, or tech). Focus on what they think of India.
 
+LANGUAGE: Output MUST be in natural, fluent English only. If the original source language is not English (e.g. Portuguese, Japanese), translate everything to English first. Do NOT include any non-English words, characters, or scripts (no Japanese, Chinese, Cyrillic, Portuguese diacritics in body text beyond proper nouns). Proper nouns may keep standard romanized spelling.
+
 Return STRICT JSON with this shape and nothing else:
 {"headline": "...", "summary": "...", "body": "..."}
 
 Rules:
-- headline: 8-110 chars, factual, no clickbait, mention the outlet or country.
-- summary: 1-2 sentences, <= 280 chars.
-- body: 3-5 short paragraphs (<= 1800 chars total). Paraphrase only — do NOT fabricate direct quotes or specific dates. Attribute clearly ("According to ${src.outlet}…"). End with a one-line "Source: ${src.outlet} (${src.country})" line.
+- headline: 8-110 chars, factual English, no clickbait, mention the outlet or country.
+- summary: 1-2 English sentences, <= 280 chars.
+- body: 3-5 short English paragraphs (<= 1800 chars total). Paraphrase only — do NOT fabricate direct quotes or specific dates. Attribute clearly ("According to ${src.outlet}…"). End with a one-line "Source: ${src.outlet} (${src.country})" line.
 - Neutral, encyclopedic tone. No emojis. No markdown.`;
 
   const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
