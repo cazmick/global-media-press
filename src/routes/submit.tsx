@@ -174,12 +174,12 @@ function SubmitPage() {
             </div>
           </Field>
 
-          <div className="flex items-center justify-between pt-4 border-t border-paper-rule">
-            <Link to="/" className="font-mono text-xs uppercase tracking-widest text-ink-muted hover:text-ink-deep">← Cancel</Link>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-4 border-t border-paper-rule">
+            <Link to="/" className="font-mono text-xs uppercase tracking-widest text-ink-muted hover:text-ink-deep order-2 sm:order-1">← Cancel</Link>
             <button
               type="submit"
               disabled={submitting || uploading}
-              className="inline-flex items-center gap-2 bg-ink-deep text-paper px-6 py-3 font-mono text-xs uppercase tracking-widest hover:bg-accent-red disabled:opacity-50"
+              className="order-1 sm:order-2 inline-flex items-center justify-center gap-2 bg-ink-deep text-paper px-6 py-3 font-mono text-xs uppercase tracking-widest hover:bg-accent-red disabled:opacity-50 w-full sm:w-auto"
             >
               {submitting && <Loader2 className="w-4 h-4 animate-spin" />}
               Publish to Front Page
