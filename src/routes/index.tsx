@@ -112,6 +112,14 @@ function Home() {
       <footer className="border-t-4 border-double border-ink-deep mt-12">
         <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-mono uppercase tracking-widest text-ink-muted">
           <span>© {new Date().getFullYear()} Global Media India</span>
+          <a
+            href="https://ko-fi.com/globalmediapress"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-accent-red"
+          >
+            Support Us on Ko-fi
+          </a>
           <span>Printed daily on the internet</span>
         </div>
       </footer>
