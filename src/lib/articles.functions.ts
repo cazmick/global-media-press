@@ -73,8 +73,6 @@ export const recordClick = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     await supabaseAdmin.from("article_clicks").insert({ article_id: data.id });
-    await supabaseAdmin.rpc("noop" as never).then(() => undefined).catch(() => undefined);
-    // Increment counter directly
     const { data: row } = await supabaseAdmin
       .from("articles").select("click_count").eq("id", data.id).maybeSingle();
     if (row) {
