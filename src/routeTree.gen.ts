@@ -14,6 +14,7 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as IamBossRouteImport } from './routes/IamBoss'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as EducationWhatIsCitizenJournalismRouteImport } from './routes/education.what-is-citizen-journalism'
 import { Route as ArticleIdRouteImport } from './routes/article.$id'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 
@@ -41,6 +42,12 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EducationWhatIsCitizenJournalismRoute =
+  EducationWhatIsCitizenJournalismRouteImport.update({
+    id: '/education/what-is-citizen-journalism',
+    path: '/education/what-is-citizen-journalism',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ArticleIdRoute = ArticleIdRouteImport.update({
   id: '/article/$id',
   path: '/article/$id',
@@ -59,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/submit': typeof SubmitRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/article/$id': typeof ArticleIdRoute
+  '/education/what-is-citizen-journalism': typeof EducationWhatIsCitizenJournalismRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -67,6 +75,7 @@ export interface FileRoutesByTo {
   '/submit': typeof SubmitRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/article/$id': typeof ArticleIdRoute
+  '/education/what-is-citizen-journalism': typeof EducationWhatIsCitizenJournalismRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -77,6 +86,7 @@ export interface FileRoutesById {
   '/submit': typeof SubmitRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/article/$id': typeof ArticleIdRoute
+  '/education/what-is-citizen-journalism': typeof EducationWhatIsCitizenJournalismRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -87,8 +97,16 @@ export interface FileRouteTypes {
     | '/submit'
     | '/admin'
     | '/article/$id'
+    | '/education/what-is-citizen-journalism'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/IamBoss' | '/sitemap.xml' | '/submit' | '/admin' | '/article/$id'
+  to:
+    | '/'
+    | '/IamBoss'
+    | '/sitemap.xml'
+    | '/submit'
+    | '/admin'
+    | '/article/$id'
+    | '/education/what-is-citizen-journalism'
   id:
     | '__root__'
     | '/'
@@ -98,6 +116,7 @@ export interface FileRouteTypes {
     | '/submit'
     | '/_authenticated/admin'
     | '/article/$id'
+    | '/education/what-is-citizen-journalism'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -107,6 +126,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SubmitRoute: typeof SubmitRoute
   ArticleIdRoute: typeof ArticleIdRoute
+  EducationWhatIsCitizenJournalismRoute: typeof EducationWhatIsCitizenJournalismRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -146,6 +166,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/education/what-is-citizen-journalism': {
+      id: '/education/what-is-citizen-journalism'
+      path: '/education/what-is-citizen-journalism'
+      fullPath: '/education/what-is-citizen-journalism'
+      preLoaderRoute: typeof EducationWhatIsCitizenJournalismRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/article/$id': {
       id: '/article/$id'
       path: '/article/$id'
@@ -181,6 +208,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SubmitRoute: SubmitRoute,
   ArticleIdRoute: ArticleIdRoute,
+  EducationWhatIsCitizenJournalismRoute: EducationWhatIsCitizenJournalismRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
