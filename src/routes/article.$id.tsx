@@ -15,19 +15,47 @@ export const Route = createFileRoute("/article/$id")({
     if (!article) throw notFound();
     return { article };
   },
-  head: ({ loaderData }) => ({
-    meta: loaderData
-      ? [
-          { title: `${loaderData.article.headline} — Global Media` },
-          { name: "description", content: loaderData.article.summary },
-          { property: "og:title", content: loaderData.article.headline },
-          { property: "og:description", content: loaderData.article.summary },
-          ...(loaderData.article.images[0]
-            ? [{ property: "og:image", content: loaderData.article.images[0] }]
-            : []),
-        ]
-      : [{ title: "Article — Global Media" }],
-  }),
+  head: ({ params, loaderData }) => {
+    const url = `https://global-media-press.lovable.app/article/${params.id}`;
+    if (!loaderData) {
+      return { meta: [{ title: "Article — Global Media" }] };
+    }
+    const a = loaderData.article;
+    return {
+      meta: [
+        { title: `${a.headline} — Global Media` },
+        { name: "description", content: a.summary },
+        { property: "og:title", content: a.headline },
+        { property: "og:description", content: a.summary },
+        { property: "og:type", content: "article" },
+        { property: "og:url", content: url },
+        ...(a.images[0] ? [{ property: "og:image", content: a.images[0] }] : []),
+      ],
+      links: [{ rel: "canonical", href: url }],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "NewsArticle",
+            headline: a.headline,
+            description: a.summary,
+            datePublished: a.published_at,
+            dateModified: a.published_at,
+            author: { "@type": "Person", name: a.submitter_name },
+            publisher: {
+              "@type": "Organization",
+              name: "Global Media",
+              logo: { "@type": "ImageObject", url: "https://global-media-press.lovable.app/favicon.ico" },
+            },
+            image: a.images.length > 0 ? a.images : undefined,
+            mainEntityOfPage: { "@type": "WebPage", "@id": url },
+            articleSection: a.category ?? undefined,
+          }),
+        },
+      ],
+    };
+  },
   component: ArticlePage,
   errorComponent: ({ error }) => (
     <div className="p-8 text-center">Failed to load article: {error.message}</div>

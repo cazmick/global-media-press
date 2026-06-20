@@ -11,8 +11,13 @@ export const Route = createFileRoute("/submit")({
   head: () => ({
     meta: [
       { title: "Submit a Story — Global Media" },
-      { name: "description", content: "Have a story the world should read? Submit your news to Global Media — it publishes instantly." },
+      { name: "description", content: "Have a story the world should read? Submit your news to Global Media — it publishes instantly to the front page." },
+      { property: "og:title", content: "Submit a Story — Global Media" },
+      { property: "og:description", content: "Have a story the world should read? Submit your news to Global Media — it publishes instantly to the front page." },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://global-media-press.lovable.app/submit" },
     ],
+    links: [{ rel: "canonical", href: "https://global-media-press.lovable.app/submit" }],
   }),
   component: SubmitPage,
 });
@@ -155,6 +160,7 @@ function SubmitPage() {
                       <img src={url} alt="" className="w-full h-full object-cover" />
                       <button
                         type="button"
+                        aria-label="Remove image"
                         onClick={() => setImages((p) => p.filter((_, idx) => idx !== i))}
                         className="absolute top-1 right-1 bg-ink-deep text-paper p-0.5 hover:bg-accent-red"
                       >

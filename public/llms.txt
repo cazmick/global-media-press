@@ -1,0 +1,11 @@
+# Global Media
+
+> Global Media is a citizen-journalism news portal — breaking news, world affairs, business, technology, sport and culture, submitted by the world, for the world.
+
+Stories are submitted by the public and publish to the front page instantly. Editors may revert anything that breaches standards.
+
+## Pages
+
+- [Front Page](/): The latest published stories, sorted by recency, with a trending sidebar.
+- [Submit a Story](/submit): Public submission form for new articles, with image upload.
+- [What is Citizen Journalism](/education/what-is-citizen-journalism): A guide explaining citizen journalism, its history, and why it matters.

@@ -22,6 +22,31 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Breaking news, world affairs, business, technology, sport and culture. Submitted by the world, for the world." },
       { property: "og:title", content: "Global Media — Front Page" },
       { property: "og:description", content: "All the news worth reading, updated by the minute." },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://global-media-press.lovable.app/" },
+    ],
+    links: [{ rel: "canonical", href: "https://global-media-press.lovable.app/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          name: "Global Media",
+          url: "https://global-media-press.lovable.app/",
+          description: "Breaking news, world affairs, business, technology, sport and culture — submitted by the world, for the world.",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          name: "Global Media",
+          url: "https://global-media-press.lovable.app/",
+          logo: "https://global-media-press.lovable.app/favicon.ico",
+        }),
+      },
     ],
   }),
   loader: ({ context }) => {
@@ -43,7 +68,7 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Masthead />
+      <Masthead asH1 />
 
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between border-b border-paper-rule pb-3 mb-6">
