@@ -30,15 +30,22 @@ function AuthPage() {
       if (mode === "signin") {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
+        toast.success("Signed in");
+        navigate({ to: "/admin", replace: true });
       } else {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email, password,
           options: { emailRedirectTo: window.location.origin + "/admin" },
         });
         if (error) throw error;
+        if (data.session) {
+          toast.success("Account created");
+          navigate({ to: "/admin", replace: true });
+        } else {
+          toast.success("Account created — check your email to confirm before signing in.");
+          setMode("signin");
+        }
       }
-      toast.success("Signed in");
-      navigate({ to: "/admin", replace: true });
     } catch (e) {
       toast.error((e as Error).message);
     } finally {
