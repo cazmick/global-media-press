@@ -3,6 +3,7 @@ import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { Masthead } from "@/components/Masthead";
 import { ArticleCard } from "@/components/ArticleCard";
 import { TrendingSidebar } from "@/components/TrendingSidebar";
+import { KofiWidget } from "@/components/KofiWidget";
 import { getPublishedArticles, getTrending } from "@/lib/articles.functions";
 import { PenSquare } from "lucide-react";
 
@@ -108,6 +109,8 @@ function Home() {
           </main>
         </div>
       </div>
+
+      <KofiWidget />
 
       <footer className="border-t-4 border-double border-ink-deep mt-12">
         <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-mono uppercase tracking-widest text-ink-muted">
