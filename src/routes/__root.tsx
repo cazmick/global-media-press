@@ -84,6 +84,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: "Global Media" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:title", content: "Global Media — The World's Newspaper of Record" },
+      { name: "twitter:title", content: "Global Media — The World's Newspaper of Record" },
+      { property: "og:description", content: "Breaking news, world affairs, business, technology, sport and culture — submitted by the world, for the world." },
+      { name: "twitter:description", content: "Breaking news, world affairs, business, technology, sport and culture — submitted by the world, for the world." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/28e67169-273e-4d1d-a97b-33a340cb38d0" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/28e67169-273e-4d1d-a97b-33a340cb38d0" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
