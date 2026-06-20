@@ -86,7 +86,7 @@ function AuthPage() {
               className="w-full bg-paper border border-paper-rule px-3 py-2 focus:outline-none focus:border-ink-deep"
             />
             <input
-              type="password" required placeholder="Password" minLength={6}
+              type="password" required placeholder="Password (8+ chars, upper, lower, number)" minLength={8} maxLength={72}
               value={password} onChange={(e) => setPassword(e.target.value)}
               className="w-full bg-paper border border-paper-rule px-3 py-2 focus:outline-none focus:border-ink-deep"
             />
