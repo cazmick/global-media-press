@@ -15,8 +15,8 @@ export function Masthead() {
         </div>
 
         <div className="flex flex-col items-center text-center py-4">
-          <Link to="/" className="font-display text-5xl sm:text-7xl font-black tracking-tight text-ink-deep leading-none">
-            Global Media
+          <Link to="/" className="block">
+            <img src={logo} alt="Global Media India" className="h-16 sm:h-20 w-auto mx-auto" />
           </Link>
           <p className="mt-2 font-serif italic text-sm text-ink-muted">
             "All the news worth reading — submitted by the world, for the world."
