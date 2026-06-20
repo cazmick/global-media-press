@@ -13,19 +13,19 @@ function formatDate(iso: string) {
 
 export function ArticleCard({ article, lead = false }: { article: ArticleDTO; lead?: boolean }) {
   return (
-    <article className={`border-b border-paper-rule pb-8 ${lead ? "" : ""}`}>
+    <article className="border-b border-paper-rule pb-6 sm:pb-8">
       {article.category && <div className="kicker mb-2">{article.category}</div>}
       <Link to="/article/$id" params={{ id: article.id }} className="block group">
         <h2
-          className={`font-display font-black text-ink-deep leading-[1.05] tracking-tight group-hover:text-accent-red ${
-            lead ? "text-4xl sm:text-5xl" : "text-2xl sm:text-3xl"
+          className={`font-display font-black text-ink-deep leading-[1.05] tracking-tight group-hover:text-accent-red break-words ${
+            lead ? "text-3xl sm:text-4xl md:text-5xl" : "text-xl sm:text-2xl md:text-3xl"
           }`}
         >
           {article.headline}
         </h2>
       </Link>
 
-      <div className={`mt-4 ${lead ? "grid sm:grid-cols-5 gap-6" : "grid sm:grid-cols-3 gap-5"}`}>
+      <div className={`mt-4 ${lead ? "grid sm:grid-cols-5 gap-4 sm:gap-6" : "grid sm:grid-cols-3 gap-4 sm:gap-5"}`}>
         {article.images.length > 0 && (
           <div className={lead ? "sm:col-span-3" : "sm:col-span-1"}>
             <ImageCarousel
@@ -40,13 +40,13 @@ export function ArticleCard({ article, lead = false }: { article: ArticleDTO; le
         )}
         <div className={article.images.length > 0 ? (lead ? "sm:col-span-2" : "sm:col-span-2") : "sm:col-span-3"}>
           <p
-            className={`text-ink leading-relaxed ${lead ? "text-lg dropcap" : "text-base"}`}
+            className={`text-ink leading-relaxed ${lead ? "text-base sm:text-lg sm:dropcap" : "text-base"}`}
           >
             {article.summary || article.body.slice(0, 160).replace(/\n+/g, " ").trim() + (article.body.length > 160 ? "…" : "")}
           </p>
-          <div className="mt-3 flex items-center gap-3 font-mono text-[11px] uppercase tracking-widest text-ink-muted">
+          <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[10px] sm:text-[11px] uppercase tracking-widest text-ink-muted">
             <span>By {article.submitter_name?.trim() || "Anonymous"}</span>
-            <span>·</span>
+            <span aria-hidden>·</span>
             <span>{formatDate(article.published_at)}</span>
           </div>
           <Link
