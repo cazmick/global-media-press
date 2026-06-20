@@ -42,7 +42,7 @@ export function ArticleCard({ article, lead = false }: { article: ArticleDTO; le
           <p
             className={`text-ink leading-relaxed ${lead ? "text-lg dropcap" : "text-base"}`}
           >
-            {article.summary}
+            {article.summary || article.body.slice(0, 160).replace(/\n+/g, " ").trim() + (article.body.length > 160 ? "…" : "")}
           </p>
           <div className="mt-3 flex items-center gap-3 font-mono text-[11px] uppercase tracking-widest text-ink-muted">
             <span>By {article.submitter_name?.trim() || "Anonymous"}</span>

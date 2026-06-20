@@ -15,7 +15,7 @@ function publicClient() {
 export type ArticleDTO = {
   id: string;
   headline: string;
-  summary: string;
+  summary: string | null;
   body: string;
   images: string[];
   submitter_name: string | null;
@@ -86,7 +86,7 @@ export const recordClick = createServerFn({ method: "POST" })
 
 const SubmitSchema = z.object({
   headline: z.string().min(8).max(200),
-  summary: z.string().min(20).max(500),
+  summary: z.string().max(500).optional().nullable(),
   body: z.string().min(40).max(20000),
   category: z.string().max(40).optional().nullable(),
   submitter_name: z.string().max(80).optional().nullable(),
@@ -98,11 +98,12 @@ export const submitArticle = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => SubmitSchema.parse(d))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const autoSummary = data.summary ?? data.body.slice(0, 220).replace(/\n+/g, " ").trim() + (data.body.length > 220 ? "…" : "");
     const { data: row, error } = await supabaseAdmin
       .from("articles")
       .insert({
         headline: data.headline,
-        summary: data.summary,
+        summary: autoSummary,
         body: data.body,
         category: data.category || null,
         submitter_name: data.submitter_name,
