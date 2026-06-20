@@ -1,0 +1,1 @@
+ALTER TABLE public.articles ALTER COLUMN summary DROP NOT NULL;

@@ -53,7 +53,7 @@ export type Database = {
           status: string
           submitter_email: string | null
           submitter_name: string | null
-          summary: string
+          summary: string | null
         }
         Insert: {
           body: string
@@ -67,7 +67,7 @@ export type Database = {
           status?: string
           submitter_email?: string | null
           submitter_name?: string | null
-          summary: string
+          summary?: string | null
         }
         Update: {
           body?: string
@@ -81,7 +81,7 @@ export type Database = {
           status?: string
           submitter_email?: string | null
           submitter_name?: string | null
-          summary?: string
+          summary?: string | null
         }
         Relationships: []
       }
