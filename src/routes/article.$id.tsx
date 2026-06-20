@@ -1,9 +1,13 @@
 import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import { Masthead } from "@/components/Masthead";
 import { ImageCarousel } from "@/components/ImageCarousel";
 import { getArticleById, recordClick } from "@/lib/articles.functions";
+import { refineEnglish } from "@/lib/refine.functions";
+import { Sparkles, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/article/$id")({
   loader: async ({ params, context }) => {
@@ -75,10 +79,12 @@ export const Route = createFileRoute("/article/$id")({
 function ArticlePage() {
   const { article } = Route.useLoaderData();
   const router = useRouter();
+  const refine = useServerFn(refineEnglish);
+  const [refinedBody, setRefinedBody] = useState<string | null>(null);
+  const [refining, setRefining] = useState(false);
 
   useEffect(() => {
     recordClick({ data: { id: article.id } }).catch(() => undefined);
-    // refresh trending after a moment
     const t = setTimeout(() => router.invalidate(), 1500);
     return () => clearTimeout(t);
   }, [article.id, router]);
@@ -86,6 +92,23 @@ function ArticlePage() {
   const date = new Date(article.published_at).toLocaleString(undefined, {
     dateStyle: "full", timeStyle: "short",
   });
+
+  const displayBody = refinedBody ?? article.body;
+
+  const handleRefine = async () => {
+    if (refining) return;
+    if (refinedBody) { setRefinedBody(null); return; }
+    setRefining(true);
+    try {
+      const { refined } = await refine({ data: { text: article.body } });
+      setRefinedBody(refined);
+      toast.success("English refined");
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Could not refine");
+    } finally {
+      setRefining(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -111,8 +134,21 @@ function ArticlePage() {
           </div>
         )}
 
+        <div className="mt-6 mb-2 flex items-center justify-end">
+          <button
+            type="button"
+            onClick={handleRefine}
+            disabled={refining}
+            className="inline-flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-widest px-2.5 py-1.5 border border-ink-deep text-ink-deep hover:bg-ink-deep hover:text-background transition-colors disabled:opacity-60"
+            title="Improve grammar and clarity with AI"
+          >
+            {refining ? <Loader2 className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
+            {refining ? "Refining…" : refinedBody ? "Show original" : "Refine English"}
+          </button>
+        </div>
+
         <div className="prose-newspaper">
-          {article.body.split(/\n\n+/).map((para: string, i: number) => (
+          {displayBody.split(/\n\n+/).map((para: string, i: number) => (
             <p
               key={i}
               className={`text-lg leading-[1.75] text-ink mb-5 ${i === 0 ? "dropcap" : ""}`}
