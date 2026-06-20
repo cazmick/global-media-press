@@ -82,11 +82,11 @@ function SubmitPage() {
   return (
     <div className="min-h-screen bg-background">
       <Masthead />
-      <div className="max-w-3xl mx-auto px-4 py-10">
+      <div className="max-w-3xl mx-auto px-3 sm:px-4 py-6 sm:py-10">
         <div className="border-b border-paper-rule pb-4 mb-6">
           <p className="kicker">The Newsroom</p>
-          <h1 className="font-display text-4xl sm:text-5xl mt-1">Submit a Story</h1>
-          <p className="mt-2 text-ink-muted">
+          <h1 className="font-display text-3xl sm:text-5xl mt-1">Submit a Story</h1>
+          <p className="mt-2 text-sm sm:text-base text-ink-muted">
             Stories publish to the front page instantly. Our editors may revert anything that breaches our standards.
           </p>
         </div>
