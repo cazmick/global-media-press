@@ -1,0 +1,1 @@
+REVOKE SELECT (submitter_email) ON public.articles FROM anon, authenticated, PUBLIC;
