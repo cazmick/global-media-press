@@ -71,12 +71,12 @@ function Home() {
     <div className="min-h-screen bg-background text-foreground">
       <Masthead asH1 />
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-between border-b border-paper-rule pb-3 mb-6">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-6 sm:py-8">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-paper-rule pb-3 mb-6">
           <p className="kicker">Front Page · Sorted by most recent</p>
           <Link
             to="/submit"
-            className="inline-flex items-center gap-2 bg-ink-deep text-paper px-4 py-2 font-mono text-xs uppercase tracking-widest hover:bg-accent-red transition"
+            className="inline-flex items-center justify-center gap-2 bg-ink-deep text-paper px-4 py-2.5 font-mono text-xs uppercase tracking-widest hover:bg-accent-red transition w-full sm:w-auto"
           >
             <PenSquare className="w-3.5 h-3.5" />
             Submit a Story
