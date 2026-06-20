@@ -3,6 +3,7 @@ import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { Masthead } from "@/components/Masthead";
 import { ArticleCard } from "@/components/ArticleCard";
 import { TrendingSidebar } from "@/components/TrendingSidebar";
+import { KofiWidget } from "@/components/KofiWidget";
 import { getPublishedArticles, getTrending } from "@/lib/articles.functions";
 import { PenSquare } from "lucide-react";
 
