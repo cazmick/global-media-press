@@ -8,7 +8,7 @@ import {
   getAllArticlesAdmin, setArticleStatus, deleteArticle, isCurrentUserAdmin,
 } from "@/lib/articles.functions";
 import { toast } from "sonner";
-import { ArrowUpCircle, ArrowDownCircle, Trash2, LogOut, ShieldAlert, Loader2 } from "lucide-react";
+import { ArrowUpCircle, ArrowDownCircle, Trash2, LogOut, ShieldAlert, Loader2, Play } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Newsroom — Global Media" }] }),
@@ -52,6 +52,27 @@ function AdminPage() {
     },
   });
 
+  const runCoverage = useMutation({
+    mutationFn: async () => {
+      const res = await fetch("/api/public/hooks/india-coverage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: "{}",
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json() as Promise<{ results: Array<{ outlet: string; ok: boolean; error?: string }> }>;
+    },
+    onSuccess: (data) => {
+      const ok = data.results.filter((r) => r.ok).length;
+      const skipped = data.results.filter((r) => r.error?.startsWith("skipped")).length;
+      const failed = data.results.length - ok - skipped;
+      toast.success(`World on India: ${ok} new, ${skipped} skipped, ${failed} failed`);
+      qc.invalidateQueries({ queryKey: ["admin", "articles"] });
+      qc.invalidateQueries({ queryKey: ["articles"] });
+    },
+    onError: (e: Error) => toast.error(`Run failed: ${e.message}`),
+  });
+
   async function signOut() {
     await qc.cancelQueries();
     qc.clear();
@@ -93,12 +114,23 @@ function AdminPage() {
             <p className="kicker">Newsroom</p>
             <h1 className="font-display text-3xl">Moderation Desk</h1>
           </div>
-          <button
-            onClick={signOut}
-            className="inline-flex items-center gap-2 border border-ink-deep px-3 py-1.5 font-mono text-xs uppercase tracking-widest hover:bg-ink-deep hover:text-paper"
-          >
-            <LogOut className="w-3.5 h-3.5" /> Sign out
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => runCoverage.mutate()}
+              disabled={runCoverage.isPending}
+              className="inline-flex items-center gap-2 border border-accent-red bg-accent-red text-paper px-3 py-1.5 font-mono text-xs uppercase tracking-widest hover:opacity-90 disabled:opacity-60"
+              title="Manually run the World-on-India coverage job"
+            >
+              {runCoverage.isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Play className="w-3.5 h-3.5 fill-current" />}
+              {runCoverage.isPending ? "Running…" : "Run World on India"}
+            </button>
+            <button
+              onClick={signOut}
+              className="inline-flex items-center gap-2 border border-ink-deep px-3 py-1.5 font-mono text-xs uppercase tracking-widest hover:bg-ink-deep hover:text-paper"
+            >
+              <LogOut className="w-3.5 h-3.5" /> Sign out
+            </button>
+          </div>
         </div>
 
         {articlesQ.isLoading ? (
