@@ -23,7 +23,7 @@ export const Route = createFileRoute("/sitemap.xml")({
         ];
 
         try {
-          const { articles } = await getPublishedArticles({ page: 1, perPage: 1000 });
+          const { articles } = await getPublishedArticles({ data: { page: 1, perPage: 1000 } });
           for (const a of articles) {
             entries.push({
               path: `/article/${a.id}`,
