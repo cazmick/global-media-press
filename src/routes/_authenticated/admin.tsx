@@ -8,7 +8,7 @@ import {
   getAllArticlesAdmin, setArticleStatus, deleteArticle, isCurrentUserAdmin,
 } from "@/lib/articles.functions";
 import { toast } from "sonner";
-import { ArrowUpCircle, ArrowDownCircle, Trash2, LogOut, ShieldAlert, Loader2 } from "lucide-react";
+import { ArrowUpCircle, ArrowDownCircle, Trash2, LogOut, ShieldAlert, Loader2, Play } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({ meta: [{ title: "Newsroom — Global Media" }] }),
