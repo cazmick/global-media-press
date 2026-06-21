@@ -85,7 +85,7 @@ function Home() {
   const [lead, ...rest] = articles;
 
   const goToPage = (p: number) => {
-    navigate({ search: (prev) => ({ ...prev, page: p }) });
+    navigate({ search: (prev: { page: number }) => ({ ...prev, page: p }) });
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
