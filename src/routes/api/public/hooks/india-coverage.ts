@@ -63,8 +63,27 @@ export const Route = createFileRoute("/api/public/hooks/india-coverage")({
 
         const results: Array<{ outlet: string; ok: boolean; id?: string; error?: string }> = [];
 
+        // Dedup window: skip outlets that already posted within the last 2.5 hours
+        // (cron runs every 3h, so this catches overlapping/retry runs without blocking the next cycle).
+        const DEDUP_HOURS = 2.5;
+        const sinceIso = new Date(Date.now() - DEDUP_HOURS * 60 * 60 * 1000).toISOString();
+
         for (const src of SOURCES) {
           try {
+            const submitterTag = `${src.outlet} digest`;
+
+            // 1) Skip if this outlet posted recently
+            const { data: recent } = await supabaseAdmin
+              .from("articles")
+              .select("id")
+              .eq("submitter_name", submitterTag)
+              .gte("published_at", sinceIso)
+              .limit(1);
+            if (recent && recent.length > 0) {
+              results.push({ outlet: src.outlet, ok: false, error: "skipped_recent_duplicate" });
+              continue;
+            }
+
             const draft = await draftStory(src, apiKey);
             if (!draft) {
               results.push({ outlet: src.outlet, ok: false, error: "draft_failed" });
@@ -95,6 +114,17 @@ export const Route = createFileRoute("/api/public/hooks/india-coverage")({
               }
             }
 
+            // 2) Skip if an article with this exact headline already exists
+            const { data: dupHeadline } = await supabaseAdmin
+              .from("articles")
+              .select("id")
+              .ilike("headline", headline)
+              .limit(1);
+            if (dupHeadline && dupHeadline.length > 0) {
+              results.push({ outlet: src.outlet, ok: false, error: "skipped_duplicate_headline" });
+              continue;
+            }
+
             const { data, error } = await supabaseAdmin
               .from("articles")
               .insert({
@@ -102,7 +132,7 @@ export const Route = createFileRoute("/api/public/hooks/india-coverage")({
                 summary,
                 body,
                 category: "World on India",
-                submitter_name: `${src.outlet} digest`,
+                submitter_name: submitterTag,
                 submitter_email: null,
                 images: [],
                 status: "published",
@@ -112,8 +142,17 @@ export const Route = createFileRoute("/api/public/hooks/india-coverage")({
               .select("id")
               .single();
 
-            if (error) results.push({ outlet: src.outlet, ok: false, error: error.message });
-            else results.push({ outlet: src.outlet, ok: true, id: data.id });
+            if (error) {
+              // 3) Unique-index race: another concurrent run inserted the same headline
+              const msg = error.message || "";
+              if (msg.includes("articles_headline_unique_idx") || (error as { code?: string }).code === "23505") {
+                results.push({ outlet: src.outlet, ok: false, error: "skipped_duplicate_headline" });
+              } else {
+                results.push({ outlet: src.outlet, ok: false, error: msg });
+              }
+            } else {
+              results.push({ outlet: src.outlet, ok: true, id: data.id });
+            }
           } catch (e) {
             results.push({ outlet: src.outlet, ok: false, error: (e as Error).message });
           }
