@@ -114,12 +114,23 @@ function AdminPage() {
             <p className="kicker">Newsroom</p>
             <h1 className="font-display text-3xl">Moderation Desk</h1>
           </div>
-          <button
-            onClick={signOut}
-            className="inline-flex items-center gap-2 border border-ink-deep px-3 py-1.5 font-mono text-xs uppercase tracking-widest hover:bg-ink-deep hover:text-paper"
-          >
-            <LogOut className="w-3.5 h-3.5" /> Sign out
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => runCoverage.mutate()}
+              disabled={runCoverage.isPending}
+              className="inline-flex items-center gap-2 border border-accent-red bg-accent-red text-paper px-3 py-1.5 font-mono text-xs uppercase tracking-widest hover:opacity-90 disabled:opacity-60"
+              title="Manually run the World-on-India coverage job"
+            >
+              {runCoverage.isPending ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Play className="w-3.5 h-3.5 fill-current" />}
+              {runCoverage.isPending ? "Running…" : "Run World on India"}
+            </button>
+            <button
+              onClick={signOut}
+              className="inline-flex items-center gap-2 border border-ink-deep px-3 py-1.5 font-mono text-xs uppercase tracking-widest hover:bg-ink-deep hover:text-paper"
+            >
+              <LogOut className="w-3.5 h-3.5" /> Sign out
+            </button>
+          </div>
         </div>
 
         {articlesQ.isLoading ? (
