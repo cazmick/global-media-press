@@ -26,19 +26,34 @@ export type ArticleDTO = {
   created_at: string;
 };
 
-export const getPublishedArticles = createServerFn({ method: "GET" }).handler(
-  async (): Promise<ArticleDTO[]> => {
+const PAGE_SIZE = 11;
+
+const PageSchema = z.object({
+  page: z.number().int().min(1).default(1),
+  perPage: z.number().int().min(1).max(50).default(PAGE_SIZE),
+});
+
+export const getPublishedArticles = createServerFn({ method: "GET" })
+  .inputValidator((d: { page?: number; perPage?: number }) => PageSchema.parse(d))
+  .handler(async ({ data }): Promise<{ articles: ArticleDTO[]; total: number }> => {
     const sb = publicClient();
-    const { data, error } = await sb
+    const page = data.page ?? 1;
+    const perPage = data.perPage ?? PAGE_SIZE;
+    const from = (page - 1) * perPage;
+    const to = from + perPage - 1;
+
+    const { data: rows, error, count } = await sb
       .from("articles")
-      .select("id,headline,summary,body,images,submitter_name,category,status,click_count,published_at,created_at")
+      .select(
+        "id,headline,summary,body,images,submitter_name,category,status,click_count,published_at,created_at",
+        { count: "exact" },
+      )
       .eq("status", "published")
       .order("published_at", { ascending: false })
-      .limit(50);
+      .range(from, to);
     if (error) throw new Error(error.message);
-    return data ?? [];
-  },
-);
+    return { articles: rows ?? [], total: count ?? 0 };
+  });
 
 export const getArticleById = createServerFn({ method: "GET" })
   .inputValidator((d: { id: string }) => z.object({ id: z.string().uuid() }).parse(d))
