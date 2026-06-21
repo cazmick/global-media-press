@@ -52,6 +52,27 @@ function AdminPage() {
     },
   });
 
+  const runCoverage = useMutation({
+    mutationFn: async () => {
+      const res = await fetch("/api/public/hooks/india-coverage", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: "{}",
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json() as Promise<{ results: Array<{ outlet: string; ok: boolean; error?: string }> }>;
+    },
+    onSuccess: (data) => {
+      const ok = data.results.filter((r) => r.ok).length;
+      const skipped = data.results.filter((r) => r.error?.startsWith("skipped")).length;
+      const failed = data.results.length - ok - skipped;
+      toast.success(`World on India: ${ok} new, ${skipped} skipped, ${failed} failed`);
+      qc.invalidateQueries({ queryKey: ["admin", "articles"] });
+      qc.invalidateQueries({ queryKey: ["articles"] });
+    },
+    onError: (e: Error) => toast.error(`Run failed: ${e.message}`),
+  });
+
   async function signOut() {
     await qc.cancelQueries();
     qc.clear();
