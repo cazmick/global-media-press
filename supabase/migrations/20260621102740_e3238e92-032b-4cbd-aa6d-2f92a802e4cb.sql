@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX IF NOT EXISTS articles_headline_unique_idx ON public.articles (lower(headline));
