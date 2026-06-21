@@ -1,12 +1,25 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 const SOURCES = [
+  // Existing outlets
   { continent: "North America", outlet: "The New York Times", country: "USA" },
   { continent: "South America", outlet: "Folha de S.Paulo", country: "Brazil" },
   { continent: "Europe", outlet: "BBC News", country: "United Kingdom" },
   { continent: "Africa", outlet: "News24", country: "South Africa" },
   { continent: "Oceania", outlet: "ABC News", country: "Australia" },
   { continent: "Asia (ex-India)", outlet: "The Asahi Shimbun", country: "Japan" },
+
+  // Additional international TV / wire outlets
+  { continent: "Europe", outlet: "BBC News UK", country: "UK" },
+  { continent: "North America", outlet: "CNN International", country: "USA" },
+  { continent: "Middle East", outlet: "Al Jazeera English", country: "Qatar" },
+  { continent: "Europe", outlet: "Sky News", country: "UK" },
+  { continent: "Europe", outlet: "France 24", country: "France" },
+  { continent: "Europe", outlet: "DW News", country: "Germany" },
+  { continent: "Europe", outlet: "Euronews", country: "Europe" },
+  { continent: "North America", outlet: "Bloomberg Television", country: "USA" },
+  { continent: "North America", outlet: "CNBC", country: "USA" },
+  { continent: "North America", outlet: "Fox News", country: "USA" },
 ];
 
 type Drafted = { headline: string; summary: string; body: string };
