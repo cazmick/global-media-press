@@ -1,10 +1,15 @@
 import { Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 
 export function Masthead({ asH1 = false }: { asH1?: boolean }) {
-  const today = new Date().toLocaleDateString("en-US", {
-    weekday: "long", year: "numeric", month: "long", day: "numeric",
-    timeZone: "UTC",
-  });
+  const [today, setToday] = useState("");
+  useEffect(() => {
+    setToday(
+      new Date().toLocaleDateString("en-US", {
+        weekday: "long", year: "numeric", month: "long", day: "numeric",
+      })
+    );
+  }, []);
   const TitleTag = asH1 ? "h1" : "div";
   return (
     <header className="border-b-4 border-double border-ink-deep bg-paper">
