@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
 
 export function Masthead({ asH1 = false }: { asH1?: boolean }) {
-  const today = new Date().toLocaleDateString(undefined, {
+  const today = new Date().toLocaleDateString("en-US", {
     weekday: "long", year: "numeric", month: "long", day: "numeric",
+    timeZone: "UTC",
   });
   const TitleTag = asH1 ? "h1" : "div";
   return (
